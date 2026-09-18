@@ -1,0 +1,4 @@
+clip_id,source_id,platform,published_at,views_24h,views_7d,average_watch_time,completion_rate,likes,comments,shares,saves,followers_gained,rights_status_at_publish,notes
+CLIP-0001,SRC-0001,YouTube Shorts,2026-01-20,1200,5400,14.2,0.61,340,22,15,8,12,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"
+CLIP-0002,SRC-0001,TikTok,2026-01-21,2300,9800,11.8,0.55,610,40,52,19,27,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"
+CLIP-0003,SRC-0001,Instagram Reels,2026-01-22,800,3100,9.5,0.48,150,9,6,4,3,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"

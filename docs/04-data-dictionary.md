@@ -17,7 +17,7 @@ The idea bank. Per-dimension scores and their evidence live separately in [`topi
 | `visual_resources_feasible_status` | enum | Same enum as above. Hard gate — see methodology. |
 | `final_score` | number or `REQUIRES_MANUAL_REVIEW` | Weighted mean of whichever of the 7 scoring dimensions in `topic-scoring-log.csv` are real numbers; `REQUIRES_MANUAL_REVIEW` if fewer than 4 of 7 are measured. |
 | `recommended` | boolean | `TRUE` only if `final_score >= 6.0` AND both gate fields are `CONFIRMED`. |
-| `status` | enum | `IDEA`, `PENDING_HUMAN_REVIEW`, `SOURCES_VERIFIED`, `SCRIPT_DRAFT`, `SCRIPT_APPROVED`, `IN_PRODUCTION`, `SHORTS_DERIVED`, `READY_TO_PUBLISH`, `PUBLISHED`, `REJECTED`, `BLOCKED_NO_SOURCES`, `BLOCKED_NO_VISUAL_RIGHTS`. |
+| `status` | enum | `IDEA`, `PENDING_HUMAN_REVIEW`, `SOURCES_VERIFIED`, `SCRIPT_DRAFT`, `SCRIPT_APPROVED`, `IN_PRODUCTION`, `SHORTS_DERIVED`, `READY_TO_PUBLISH`, `PUBLISHED`, `REJECTED`, `BLOCKED_NO_SOURCES`, `BLOCKED_NO_VISUAL_RIGHTS`, `BLOCKED_INVALID_INTAKE`. |
 | `created_at` | date | Date the topic was logged. |
 | `last_scored_at` | date | Date `final_score` was last (re)computed. |
 | `notes` | string | Free-text internal notes. |

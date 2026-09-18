@@ -6,7 +6,7 @@ This document defines how candidate topics in [`../templates/topic-registry.csv`
 
 **A score is never invented to fill a gap.** If a real data point is not available (e.g., no access to live YouTube search-trend or competition data), the corresponding entry is recorded as `NOT_MEASURED`. If a data point requires a judgment call that hasn't been confirmed by a human yet, it is recorded as `REQUIRES_MANUAL_REVIEW`. Both are valid, expected values — not errors.
 
-Every row in `topic-scoring-log.csv` that carries a real value must also carry `source`, `source_url`, and `consulted_at`. Rows without a real external source (e.g., an internal editorial judgment call) must say so explicitly in `notes` rather than imply an external citation that doesn't exist.
+Every row in `topic-scoring-log.csv` that carries a real value must also carry `source` and `consulted_at`. `source_url` is required whenever the source is external (a webpage, dataset, or document) — it is left empty only for rows backed by an internal editorial judgment call, and `source` must say so explicitly (e.g., "Internal production/editorial assessment") rather than imply an external citation that doesn't exist. `source` must always accurately name the actual origin of the data — never a generic or copy-pasted label from a different row.
 
 ## The seven dimensions
 
@@ -51,7 +51,7 @@ Each is one of: `NOT_MEASURED`, `REQUIRES_MANUAL_REVIEW`, `CONFIRMED`, `INSUFFIC
 
 ## Status lifecycle (`topic-registry.csv.status`)
 
-`IDEA` → `PENDING_HUMAN_REVIEW` (scored, gates not yet confirmed) → `SOURCES_VERIFIED` (both gates `CONFIRMED`, ready for script drafting) → `SCRIPT_DRAFT` → `SCRIPT_APPROVED` → `IN_PRODUCTION` → `SHORTS_DERIVED` → `READY_TO_PUBLISH` → `PUBLISHED`, with `REJECTED`, `BLOCKED_NO_SOURCES`, and `BLOCKED_NO_VISUAL_RIGHTS` as terminal-until-re-reviewed states.
+`IDEA` → `PENDING_HUMAN_REVIEW` (scored, gates not yet confirmed) → `SOURCES_VERIFIED` (both gates `CONFIRMED`, ready for script drafting) → `SCRIPT_DRAFT` → `SCRIPT_APPROVED` → `IN_PRODUCTION` → `SHORTS_DERIVED` → `READY_TO_PUBLISH` → `PUBLISHED`, with `REJECTED`, `BLOCKED_NO_SOURCES`, `BLOCKED_NO_VISUAL_RIGHTS`, and `BLOCKED_INVALID_INTAKE` (required fields missing at intake, before scoring even runs — see the n8n workflow) as terminal-until-re-reviewed states.
 
 ## Worked example: how the initial idea list was scored
 

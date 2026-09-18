@@ -1,0 +1,4 @@
+topic_id,working_title,category,region,language,trend_score,competition_score,novelty_score,final_score,status,created_at,notes
+TOPIC-0001,"[EXAMPLE] Why does this European microstate still exist?",curiosities,Europe,es,7,4,8,7.3,SCRIPT_DRAFT,2026-09-01,"[EXAMPLE DATA] Strong novelty, low competition"
+TOPIC-0002,"[EXAMPLE] The busiest border crossing in the EU",borders,Europe,es,6,6,6,6.0,SOURCES_VERIFIED,2026-09-05,"[EXAMPLE DATA] Needs official traffic statistics as source"
+TOPIC-0003,"[EXAMPLE] How one river splits three capitals",geography,Europe,es,5,7,5,5.4,IDEA,2026-09-10,"[EXAMPLE DATA] High competition, in idea bank only"

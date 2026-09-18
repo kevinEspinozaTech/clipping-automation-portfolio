@@ -1,4 +1,4 @@
-clip_id,source_id,platform,published_at,views_7d,completion_rate,rights_status_at_publish,notes
-CLIP-0001,SRC-0001,YouTube Shorts,2026-01-20,5400,0.61,VERIFIED,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"
-CLIP-0002,SRC-0001,TikTok,2026-01-21,9800,0.55,VERIFIED,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"
-CLIP-0003,SRC-0001,Instagram Reels,2026-01-22,3100,0.48,VERIFIED,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"
+video_id,video_type,platform,published_at,views_7d,completion_rate,assets_cleared_at_publish,notes
+VIDEO-0001,long_form,YouTube,2026-10-15,4200,0.42,TRUE,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"
+SHORT-0001,short,YouTube Shorts,2026-10-16,14500,0.71,TRUE,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"
+SHORT-0002,short,YouTube Shorts,2026-10-17,8200,0.58,TRUE,"[DEMONSTRATIVE DATA — NOT REAL] Sample export for portfolio illustration"

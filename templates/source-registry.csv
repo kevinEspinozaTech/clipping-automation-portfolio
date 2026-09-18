@@ -1,0 +1,4 @@
+source_id,topic_id,source_url,source_type,publisher,accessed_at,reliability_notes,verified_by,verified_at,notes
+SOURCE-0001,TOPIC-0001,https://example.com/official-stats/microstate,official_statistics,"[EXAMPLE] National Statistics Office",2026-09-01,"Primary government data source",J. Reviewer,2026-09-02,"[EXAMPLE DATA] Used for population and area figures"
+SOURCE-0002,TOPIC-0002,https://example.com/eu-report/border-traffic,official_statistics,"[EXAMPLE] EU Transport Agency",2026-09-05,"Cross-checked against two independent reports",J. Reviewer,2026-09-06,"[EXAMPLE DATA] Traffic volume figures for the script"
+SOURCE-0003,TOPIC-0002,https://example.com/encyclopedia/border-history,encyclopedia,"[EXAMPLE] Online Encyclopedia",2026-09-05,"Background/history only, not used for statistics",,,"[EXAMPLE DATA] Pending reviewer sign-off"

@@ -1,57 +1,74 @@
-# n8n Workflow — Stage 1: Content Intake and Rights Gate (Demo)
+# n8n Workflows
 
-## Purpose
+Two safe, non-functional demonstration workflows model the current pipeline. Neither calls any external service, requires credentials, or publishes anything. See [`../docs/decisions/ADR-001-pivot-to-original-faceless-content.md`](../docs/decisions/ADR-001-pivot-to-original-faceless-content.md) for why the pipeline changed from clipping to original content.
 
-`stage-01-content-intake.json` is a **safe, non-functional demonstration** of the rights-gate logic defined in [`../docs/03-content-rights-policy.md`](../docs/03-content-rights-policy.md). It shows how a source video's fictitious metadata is validated, checked against `rights_status` and usage flags, and routed to one of three outcomes: `READY_FOR_TRANSCRIPTION`, `HUMAN_REVIEW_REQUIRED`, or `BLOCKED_RIGHTS` / `BLOCKED_INVALID_INTAKE`.
+## 1. `stage-01-topic-research-pipeline.json`
 
-It does not call any external service, does not require credentials, and does not publish or transcribe anything.
+### Purpose
 
-## Requirements
+Demonstrates the **first real automation target**: research → idea bank → topic scoring → source documentation gate → assisted script draft readiness → state logging (see [`../docs/06-roadmap.md`](../docs/06-roadmap.md)). Mirrors [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md)'s scoring logic with a hardcoded average in place of a real AI call.
 
-- A local or cloud n8n instance (self-hosted or n8n.cloud). No specific version is required to *read* the JSON, but see [Limitations](#limitations) regarding import compatibility.
-- No community nodes. Only standard n8n nodes are used: `Manual Trigger`, `Set`, `If`, and `Sticky Note`.
-- No credentials of any kind are needed to import or run this workflow.
+### Manual test
 
-## Importing
+1. Import the file into n8n (**Workflows → Import from File**).
+2. Execute the workflow via the Manual Trigger.
+3. Inspect **Execution Summary** for the final `status`.
+4. Edit **Set Fictitious Topic Data** to exercise other branches:
+   - Lower any of the four scores so their average falls below 6.0 → expect `IDEA_BACKLOG`.
+   - Set `sources_documented` to `false` or `source_count` to `0` → expect `SOURCES_PENDING`.
+   - Clear `topic_id`, `working_title`, or `category` → expect `BLOCKED_INVALID_INTAKE`.
+   - Otherwise → expect `SCRIPT_DRAFT_READY`.
 
-1. Open your n8n instance.
-2. Go to **Workflows → Import from File** (or **⋯ menu → Import from File** depending on your n8n version).
-3. Select `stage-01-content-intake.json`.
-4. The workflow will appear with its nodes, connections, and sticky notes intact.
+## 2. `visual-asset-rights-gate.json`
 
-## Manual test
+### Purpose
 
-1. Open the imported workflow.
-2. Click **Execute Workflow** (the Manual Trigger will fire).
-3. Inspect the output of the **Execution Summary** node — it prints a one-line summary combining `source_id`, `processing_status`, and the block reason (if any).
-4. To exercise other branches, open **Set Fictitious Source Data** and change values, then re-execute:
-   - Set `rights_status` to something other than `VERIFIED` (e.g., `PENDING_REVIEW`) → expect `BLOCKED_RIGHTS`.
-   - Set any of `commercial_use_allowed`, `editing_allowed`, `platform_use_allowed` to `false`, or `authorization_expired` to `true` → expect `HUMAN_REVIEW_REQUIRED`.
-   - Set `human_review_completed` to `false` → expect `HUMAN_REVIEW_REQUIRED`.
-   - Clear `source_id`, `source_platform`, `creator_name`, or `rights_status` → expect `BLOCKED_INVALID_INTAKE`.
+Demonstrates the license gate from [`../docs/03-visual-asset-rights-policy.md`](../docs/03-visual-asset-rights-policy.md): an asset may only be marked usable if all 8 mandatory fields are present, `license_type` is not `UNAUTHORIZED`, `approval_status = VERIFIED`, and `human_review_completed = TRUE`. This gate is independent of, and runs after, the topic-research pipeline above — it applies once a topic has a script and needs supporting maps/footage/photos/music.
+
+### Manual test
+
+1. Import the file into n8n.
+2. Execute via the Manual Trigger.
+3. Inspect **Execution Summary** for the final `usage_status`.
+4. Edit **Set Fictitious Asset Data** to exercise other branches:
+   - Clear `source`, `author`, `verified_at`, `allowed_scope`, or `evidence_reference` → expect `BLOCKED_INCOMPLETE_RECORD`.
+   - Set `license_type` to `UNAUTHORIZED` → expect `REJECTED_UNAUTHORIZED`.
+   - Set `approval_status` to anything other than `VERIFIED` → expect `PENDING_REVIEW`.
+   - Set `human_review_completed` to `false` → expect `PENDING_REVIEW`.
+   - Otherwise → expect `CLEARED_FOR_USE`.
+
+## Requirements (both workflows)
+
+- A local or cloud n8n instance. No specific version is required to *read* the JSON — see [Limitations](#limitations).
+- No community nodes. Only standard n8n nodes are used: `Manual Trigger`, `Set`, `If`, `Sticky Note`.
+- No credentials of any kind are needed to import or run either workflow.
 
 ## Sample data
 
-All data in the **Set Fictitious Source Data** node is fictitious (`SRC-DEMO-0001`, `Demo Creator`, `https://example.com/demo-source`). It does not reference any real content, creator, or platform account.
+All data in both **Set** nodes is fictitious (`TOPIC-DEMO-0001`, `ASSET-DEMO-0001`, `example.com`). It does not reference any real topic, video, or asset.
 
 ## Expected results
 
-| Scenario | `processing_status` output |
-|---|---|
-| All conditions pass | `READY_FOR_TRANSCRIPTION` |
-| `rights_status` ≠ `VERIFIED` | `BLOCKED_RIGHTS` |
-| Any usage flag false or expired = true | `HUMAN_REVIEW_REQUIRED` |
-| `human_review_completed` = false | `HUMAN_REVIEW_REQUIRED` |
-| Missing required intake field | `BLOCKED_INVALID_INTAKE` |
+| Workflow | Scenario | Output field |
+|---|---|---|
+| Topic research | All conditions pass | `status = SCRIPT_DRAFT_READY` |
+| Topic research | `final_score` < 6.0 | `status = IDEA_BACKLOG` |
+| Topic research | No sources documented | `status = SOURCES_PENDING` |
+| Topic research | Missing required field | `status = BLOCKED_INVALID_INTAKE` |
+| Asset rights gate | All conditions pass | `usage_status = CLEARED_FOR_USE` |
+| Asset rights gate | `license_type = UNAUTHORIZED` | `usage_status = REJECTED_UNAUTHORIZED` |
+| Asset rights gate | Not yet `VERIFIED` or no human review | `usage_status = PENDING_REVIEW` |
+| Asset rights gate | Missing mandatory field | `usage_status = BLOCKED_INCOMPLETE_RECORD` |
 
 ## Limitations
 
-- This workflow has been validated as **syntactically valid JSON** and structured according to the standard n8n workflow export shape, but it has not been executed against a specific pinned n8n version in this environment. Node `typeVersion` values reflect commonly available versions at the time of writing; if your instance uses different versions, n8n's import process should still map or auto-upgrade them, but minor manual adjustment may be required.
-- It does not read from or write to `content-registry.csv` / `rights-registry.csv` — that integration is planned for Stage 2.
-- It does not call any AI, transcription, or publishing service.
+- Both workflows have been validated as **syntactically valid JSON** in the standard n8n export shape, but neither has been executed against a specific pinned n8n version in this environment. If your instance uses different node `typeVersion`s, n8n's import process should map or auto-upgrade them, but minor manual adjustment may be required.
+- Neither workflow reads from or writes to the actual CSV registries — that integration is planned for a future automation stage.
+- Neither calls any AI, research, or publishing service; the scoring math in the topic-research pipeline is a placeholder for a future AI step.
 
 ## Future steps
 
-- Stage 2: replace the static `Set` node with a real trigger (e.g., form submission or spreadsheet read) sourced from `templates/content-registry.csv` and `templates/rights-registry.csv`.
-- Stage 2: write the resulting `processing_status` back to the registry instead of only summarizing it in-memory.
-- Stage 3+: connect the `READY_FOR_TRANSCRIPTION` branch to an actual transcription step.
+- Connect **Set Fictitious Topic Data** to a real intake source (form, spreadsheet, or the `topic-registry.csv`/`source-registry.csv` files) and replace the hardcoded score computation with a real call using [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md).
+- Connect the `SCRIPT_DRAFT_READY` branch to a real assisted-drafting step using [`../prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md).
+- Connect the visual-asset gate to `visual-asset-registry.csv` so `CLEARED_FOR_USE` assets are tracked per video before editing begins.
+- Write results back to the registries instead of only summarizing them in-memory.

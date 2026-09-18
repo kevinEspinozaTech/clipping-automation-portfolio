@@ -2,81 +2,84 @@
 
 ## Overview
 
-The system is organized as a linear pipeline with one hard gate (content-rights verification) and two human checkpoints (rights review and pre-publish review). The diagram below mirrors the one in the root [README.md](../README.md).
+The system is organized as a linear pipeline with two independent verification gates (source/fact documentation and visual-asset licensing) and two human checkpoints (script review and final pre-publish review). The diagram below mirrors the one in the root [README.md](../README.md).
 
 ```mermaid
 flowchart TD
-    A[Register source video] --> B{Rights status?}
-    B -->|PENDING_REVIEW / REJECTED / EXPIRED / REVOKED| X[Blocked — no further processing]
-    B -->|VERIFIED + all usage flags TRUE + human review completed| C[Transcribe authorized video]
-    C --> D[AI transcript analysis]
-    D --> E[Segment scoring & candidate detection]
-    E --> F[Generate vertical clips - Python + FFmpeg]
-    F --> G{Mandatory human review}
-    G -->|Rejected| H[Discard / send back for edits]
-    G -->|Approved| I[Publish to authorized platforms]
-    I --> J[Collect performance metrics]
-    J --> K[Feed learnings back into scoring]
+    A[Research trends & competition] --> B[Idea bank]
+    B --> C[Topic scoring]
+    C --> D{Source verification}
+    D -->|Not documented| D1[Blocked - sources pending]
+    D -->|Documented| E{Visual-license verification}
+    E -->|Not cleared| E1[Blocked - assets pending]
+    E -->|Cleared| F[Original script creation]
+    F --> G{Human script review}
+    G -->|Rejected| F
+    G -->|Approved| H[Narration]
+    H --> I[Maps, graphics & authorized material]
+    I --> J[Long-form video edit]
+    J --> K[Shorts derived from own content]
+    K --> L[Subtitles]
+    L --> M{Final human review}
+    M -->|Rejected| J
+    M -->|Approved| N[Upload as private / draft]
+    N --> O[Manual publish]
+    O --> P[Metrics collection]
+    P --> Q[Continuous improvement]
+    Q --> B
 
-    style X fill:#5a1a1a,stroke:#c0392b,color:#fff
-    style B fill:#3a3a10,stroke:#f1c40f,color:#fff
+    style D1 fill:#5a1a1a,stroke:#c0392b,color:#fff
+    style E1 fill:#5a1a1a,stroke:#c0392b,color:#fff
+    style D fill:#3a3a10,stroke:#f1c40f,color:#fff
+    style E fill:#3a3a10,stroke:#f1c40f,color:#fff
     style G fill:#1a3a1a,stroke:#27ae60,color:#fff
+    style M fill:#1a3a1a,stroke:#27ae60,color:#fff
+    style O fill:#1a2a4a,stroke:#2980b9,color:#fff
 ```
 
 ## Components
 
-### 1. Content intake (Stage 1 skeleton, Stage 2 automation)
+### 1-3. Research, idea bank, topic scoring (current automation focus)
 
-Every candidate source is registered in [`templates/content-registry.csv`](../templates/content-registry.csv) with basic metadata (platform, creator, title, duration, language, niche). This is the entry point of the pipeline and does not imply any rights have been granted.
+Candidate topics are logged in [`templates/topic-registry.csv`](../templates/topic-registry.csv) with category, region, and scores. [`prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md) assists scoring; [`n8n/stage-01-topic-research-pipeline.json`](../n8n/stage-01-topic-research-pipeline.json) demonstrates the branching logic with fictitious data. This is the first stage getting real automation — see [`06-roadmap.md`](06-roadmap.md).
 
-### 2. Rights gate (Stage 1 policy + skeleton, Stage 2 enforcement)
+### 4. Source verification (gate)
 
-Every source also has a corresponding row in [`templates/rights-registry.csv`](../templates/rights-registry.csv). The gate logic, defined in full in [`03-content-rights-policy.md`](03-content-rights-policy.md), requires **all** of the following simultaneously before a source can proceed:
+Every factual claim used in a script must trace back to a row in [`templates/source-registry.csv`](../templates/source-registry.csv). A topic cannot move to script creation until its sources are documented — modeled in the same n8n workflow as the "Sources Documented?" branch.
 
-```text
-rights_status = VERIFIED
-commercial_use_allowed = TRUE
-editing_allowed = TRUE
-platform_use_allowed = TRUE
-authorization_expired = FALSE
-human_review_completed = TRUE
-```
+### 5. Visual-license verification (gate)
 
-If any condition is not met, the source is routed to a blocked state (`HUMAN_REVIEW_REQUIRED` or `BLOCKED_RIGHTS`) and does not advance. The Stage 1 n8n skeleton in [`n8n/stage-01-content-intake.json`](../n8n/stage-01-content-intake.json) demonstrates this branching logic using fictitious data.
+Every map, photo, footage clip, chart, or music track used in a video must have a `VERIFIED`, human-reviewed record in [`templates/visual-asset-registry.csv`](../templates/visual-asset-registry.csv), per [`03-visual-asset-rights-policy.md`](03-visual-asset-rights-policy.md). This is modeled independently in [`n8n/visual-asset-rights-gate.json`](../n8n/visual-asset-rights-gate.json), since asset sourcing happens per-video and can continue after the script is approved.
 
-### 3. Transcription (planned — Stage 3)
+### 6-7. Script creation & human review
 
-Only sources that pass the rights gate are transcribed. Transcripts are treated as sensitive working data and are excluded from version control (see `.gitignore`).
+[`prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md) assists a human writer using only verified sources. It explicitly never copies another channel's script. Every draft requires human review before narration — the AI never approves its own output.
 
-### 4. AI transcript analysis & segment scoring (planned — Stage 4–5)
+### 8-11. Narration, visuals, long-form edit, Shorts derivation (planned, not yet implemented)
 
-An AI prompt (see [`prompts/segment-scoring-prompt.md`](../prompts/segment-scoring-prompt.md)) scores candidate segments for hook strength, clarity, emotional impact, standalone viability, and brand safety, and flags any rights-risk signal it detects in the transcript itself (e.g., a mention suggesting undisclosed sponsorship or third-party material). The AI never makes the final rights determination.
+Narration is recorded/generated for the approved script; cleared visual assets are assembled with Python + FFmpeg into the long-form video; [`prompts/shorts-segment-scoring-prompt.md`](../prompts/shorts-segment-scoring-prompt.md) assists identifying which moments of the **finished, original** long-form video work as standalone Shorts.
 
-### 5. Clip generation (planned — Stage 6)
+### 12-13. Subtitles & final human review (planned)
 
-Python orchestrates FFmpeg to cut and reformat approved segments into vertical video. This stage does not exist yet; `scripts/README.md` documents the intended approach.
+Subtitles are generated for both formats. A second, independent human review checks the finished video/Shorts — quality, factual accuracy, and that all visual assets used are still within their `VERIFIED` scope.
 
-### 6. Mandatory human review (planned — Stage 7)
+### 14-15. Private upload & manual publish (planned)
 
-Before publishing, a human reviewer confirms clip quality, brand safety, and — again — that the rights basis for the clip is still valid (rights can expire or be revoked between intake and publishing).
+Approved videos are uploaded as private/draft first. Publishing itself is always a manual, human action — there is no automatic publish path in this system, now or in the roadmap (see MVP constraints in [`05-mvp-testing-plan.md`](05-mvp-testing-plan.md)).
 
-### 7. Publishing (planned — Stage 8)
+### 16-17. Metrics & continuous improvement (planned)
 
-Only authorized platforms (as recorded in `rights-registry.csv`'s `allowed_platforms` field) may receive a given clip.
-
-### 8. Metrics (planned — Stage 9)
-
-Post-publish performance is logged in [`templates/performance-metrics.csv`](../templates/performance-metrics.csv), including the rights status at time of publish for auditability.
+Post-publish performance is logged in [`templates/performance-metrics.csv`](../templates/performance-metrics.csv), feeding back into which topics and formats to prioritize next.
 
 ## Data flow summary
 
-| Stage in pipeline | Primary artifact | Stage 1 status |
+| Stage in pipeline | Primary artifact | Current status |
 |---|---|---|
-| Intake | `content-registry.csv` | Skeleton + sample data |
-| Rights verification | `rights-registry.csv` + policy doc | Skeleton + sample data |
-| Transcription | (private, not versioned) | Not implemented |
-| Scoring | `prompts/segment-scoring-prompt.md` output | Prompt defined, not wired to automation |
-| Clip generation | (private, not versioned) | Not implemented |
-| Human review | `tests/validation-checklist.md` (interim) | Checklist only |
-| Publishing | External platforms | Not implemented |
+| Research / idea bank / scoring | `topic-registry.csv` | Skeleton + sample data; first automation target |
+| Source verification | `source-registry.csv` | Skeleton + sample data; first automation target |
+| Visual-license verification | `visual-asset-registry.csv` | Skeleton + sample data + n8n demo gate |
+| Script creation | `prompts/script-draft-assist-prompt.md` output | Prompt defined, not wired to automation |
+| Narration / edit / Shorts / subtitles | (private, not versioned) | Not implemented |
+| Human reviews | `tests/validation-checklist.md` (interim) | Checklist only |
+| Publishing | External platform (manual) | Not implemented |
 | Metrics | `performance-metrics.csv` | Skeleton + sample data |

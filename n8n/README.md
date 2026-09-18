@@ -6,18 +6,20 @@ Two safe, non-functional demonstration workflows model the current pipeline. Nei
 
 ### Purpose
 
-Demonstrates the **first real automation target**: research → idea bank → topic scoring → source documentation gate → assisted script draft readiness → state logging (see [`../docs/06-roadmap.md`](../docs/06-roadmap.md)). Mirrors [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md)'s scoring logic with a hardcoded average in place of a real AI call.
+Demonstrates the **Stage 2 scoring model**: research → idea bank → the two hard blocking gates → 7-dimension scoring → the recommendation gate → state logging (see [`../docs/06-roadmap.md`](../docs/06-roadmap.md) and [`../docs/07-topic-scoring-methodology.md`](../docs/07-topic-scoring-methodology.md)). Mirrors [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md)'s 7-dimension model, computing `final_score` only from whichever dimensions are real numbers (never fabricating a value for a `NOT_MEASURED` one) in place of a real AI call.
 
 ### Manual test
 
 1. Import the file into n8n (**Workflows → Import from File**).
 2. Execute the workflow via the Manual Trigger.
-3. Inspect **Execution Summary** for the final `status`.
+3. Inspect **Execution Summary** for the final `status`, `final_score`, and `recommended`.
 4. Edit **Set Fictitious Topic Data** to exercise other branches:
-   - Lower any of the four scores so their average falls below 6.0 → expect `IDEA_BACKLOG`.
-   - Set `sources_documented` to `false` or `source_count` to `0` → expect `SOURCES_PENDING`.
+   - Set `sources_available_status` to `INSUFFICIENT` → expect `BLOCKED_NO_SOURCES` (checked before scoring, regardless of score).
+   - Set `visual_resources_feasible_status` to `INSUFFICIENT` → expect `BLOCKED_NO_VISUAL_RIGHTS`.
+   - Reduce the number of numeric score fields below 4 (turn more of them into the string `NOT_MEASURED`) → expect `final_score = REQUIRES_MANUAL_REVIEW`, routed to `PENDING_HUMAN_REVIEW`.
+   - Lower the measured scores so their average falls below 6.0 → expect `PENDING_HUMAN_REVIEW`.
+   - Set **both** `sources_available_status` and `visual_resources_feasible_status` to `CONFIRMED` (with a measured average ≥ 6.0) → expect `SOURCES_VERIFIED`, `recommended = true`. The demo data ships with both gates at `REQUIRES_MANUAL_REVIEW` on purpose, so a default run never self-approves.
    - Clear `topic_id`, `working_title`, or `category` → expect `BLOCKED_INVALID_INTAKE`.
-   - Otherwise → expect `SCRIPT_DRAFT_READY`.
 
 ## 2. `visual-asset-rights-gate.json`
 
@@ -51,9 +53,10 @@ All data in both **Set** nodes is fictitious (`TOPIC-DEMO-0001`, `ASSET-DEMO-000
 
 | Workflow | Scenario | Output field |
 |---|---|---|
-| Topic research | All conditions pass | `status = SCRIPT_DRAFT_READY` |
-| Topic research | `final_score` < 6.0 | `status = IDEA_BACKLOG` |
-| Topic research | No sources documented | `status = SOURCES_PENDING` |
+| Topic research | Score ≥ 6.0 and both gates `CONFIRMED` | `status = SOURCES_VERIFIED`, `recommended = true` |
+| Topic research | Score < 6.0, unmeasured, or gates not both `CONFIRMED` | `status = PENDING_HUMAN_REVIEW`, `recommended = false` |
+| Topic research | `sources_available_status = INSUFFICIENT` | `status = BLOCKED_NO_SOURCES` |
+| Topic research | `visual_resources_feasible_status = INSUFFICIENT` | `status = BLOCKED_NO_VISUAL_RIGHTS` |
 | Topic research | Missing required field | `status = BLOCKED_INVALID_INTAKE` |
 | Asset rights gate | All conditions pass | `usage_status = CLEARED_FOR_USE` |
 | Asset rights gate | `license_type = UNAUTHORIZED` | `usage_status = REJECTED_UNAUTHORIZED` |
@@ -64,11 +67,12 @@ All data in both **Set** nodes is fictitious (`TOPIC-DEMO-0001`, `ASSET-DEMO-000
 
 - Both workflows have been validated as **syntactically valid JSON** in the standard n8n export shape, but neither has been executed against a specific pinned n8n version in this environment. If your instance uses different node `typeVersion`s, n8n's import process should map or auto-upgrade them, but minor manual adjustment may be required.
 - Neither workflow reads from or writes to the actual CSV registries — that integration is planned for a future automation stage.
-- Neither calls any AI, research, or publishing service; the scoring math in the topic-research pipeline is a placeholder for a future AI step.
+- Neither calls any AI, research, or publishing service; the scoring formula in the topic-research pipeline (mean of measured dimensions, per [`../docs/07-topic-scoring-methodology.md`](../docs/07-topic-scoring-methodology.md)) runs as a plain n8n expression rather than a real AI call.
+- The demo data ships with both gate fields at `REQUIRES_MANUAL_REVIEW`, so importing and running the workflow as-is never produces `SOURCES_VERIFIED` — that is intentional, not a bug: only a human editing the fields (or, later, a real human-review step) can set a gate to `CONFIRMED`.
 
 ## Future steps
 
-- Connect **Set Fictitious Topic Data** to a real intake source (form, spreadsheet, or the `topic-registry.csv`/`source-registry.csv` files) and replace the hardcoded score computation with a real call using [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md).
-- Connect the `SCRIPT_DRAFT_READY` branch to a real assisted-drafting step using [`../prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md).
+- Connect **Set Fictitious Topic Data** to a real intake source (the `topic-registry.csv`/`topic-scoring-log.csv` files) and replace the hardcoded scores with a real call using [`../prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md).
+- Connect the `SOURCES_VERIFIED` branch to a real assisted-drafting step using [`../prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md).
 - Connect the visual-asset gate to `visual-asset-registry.csv` so `CLEARED_FOR_USE` assets are tracked per video before editing begins.
 - Write results back to the registries instead of only summarizing them in-memory.

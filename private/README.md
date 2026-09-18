@@ -4,7 +4,7 @@ This folder is for **local use only** and is excluded from version control (see 
 
 ## Intended contents
 
-- References to real permission evidence (e.g., `private/agreements/<source_id>-*.pdf`) that `rights-registry.csv`'s `evidence_reference` field points to by path, without the file itself ever being committed.
+- References to real license evidence (e.g., `private/licenses/<asset_id>-*.pdf`) that `visual-asset-registry.csv`'s `evidence_reference` field points to by path, without the file itself ever being committed.
 - Local working copies of transcripts, raw video, or other sensitive material used during development.
 - Any other content that must never be published in this public portfolio repository.
 

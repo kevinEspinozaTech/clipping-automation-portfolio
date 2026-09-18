@@ -1,0 +1,319 @@
+{
+  "name": "Visual Asset Rights Gate (Demo)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "3a111111-1111-4111-8111-111111111301",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-1400, 300]
+    },
+    {
+      "parameters": {
+        "content": "## Visual asset license gate demo\nThis workflow is a SAFE, NON-FUNCTIONAL demonstration.\nIt uses only fictitious sample data, calls no external\nservices, and requires no credentials. It models the\nasset-level license gate from\ndocs/03-visual-asset-rights-policy.md - applied to a\nsingle map/photo/footage/music asset before it may be\nused inside an edited video.",
+        "height": 260,
+        "width": 400
+      },
+      "id": "3a111111-1111-4111-8111-111111111302",
+      "name": "Sticky Note - Overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-1420, -60]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "f1", "name": "asset_id", "type": "string", "value": "ASSET-DEMO-0001" },
+            { "id": "f2", "name": "topic_id", "type": "string", "value": "TOPIC-DEMO-0001" },
+            { "id": "f3", "name": "asset_type", "type": "string", "value": "map" },
+            { "id": "f4", "name": "source", "type": "string", "value": "In-house generated map" },
+            { "id": "f5", "name": "author", "type": "string", "value": "Project Team" },
+            { "id": "f6", "name": "license_type", "type": "string", "value": "ORIGINAL" },
+            { "id": "f7", "name": "source_url", "type": "string", "value": "" },
+            { "id": "f8", "name": "verified_at", "type": "string", "value": "2026-09-02" },
+            { "id": "f9", "name": "allowed_scope", "type": "string", "value": "commercial, modified, any platform" },
+            { "id": "f10", "name": "evidence_reference", "type": "string", "value": "private/licenses/ASSET-DEMO-0001-generation-log.txt" },
+            { "id": "f11", "name": "approval_status", "type": "string", "value": "VERIFIED" },
+            { "id": "f12", "name": "human_review_completed", "type": "boolean", "value": true }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111303",
+      "name": "Set Fictitious Asset Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-1180, 300]
+    },
+    {
+      "parameters": {
+        "content": "## 1) Asset intake\nManual Trigger simulates a new visual/audio asset\nbeing logged. The Set node fills in FICTITIOUS demo\nfields matching the 8 mandatory columns in\ntemplates/visual-asset-registry.csv - edit these to\ntest each branch below.",
+        "height": 220,
+        "width": 320
+      },
+      "id": "3a111111-1111-4111-8111-111111111304",
+      "name": "Sticky Note - Intake",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-1200, 20]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            { "id": "c1", "leftValue": "={{$json.asset_id}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c2", "leftValue": "={{$json.source}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c3", "leftValue": "={{$json.author}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c4", "leftValue": "={{$json.license_type}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c5", "leftValue": "={{$json.verified_at}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c6", "leftValue": "={{$json.allowed_scope}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c7", "leftValue": "={{$json.evidence_reference}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } },
+            { "id": "c8", "leftValue": "={{$json.approval_status}}", "rightValue": "", "operator": { "type": "string", "operation": "notEmpty" } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111305",
+      "name": "Validate 8 Mandatory Fields",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-940, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "e1", "name": "usage_status", "type": "string", "value": "BLOCKED_INCOMPLETE_RECORD" },
+            { "id": "e2", "name": "block_reason", "type": "string", "value": "One or more of the 8 mandatory fields are missing (source_url may legitimately be blank only for ORIGINAL/OWN_MATERIAL assets)." }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111306",
+      "name": "Blocked - Incomplete Record",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-700, 480]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            { "id": "d1", "leftValue": "={{$json.license_type}}", "rightValue": "UNAUTHORIZED", "operator": { "type": "string", "operation": "notEquals" } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111307",
+      "name": "license_type != UNAUTHORIZED?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-700, 220]
+    },
+    {
+      "parameters": {
+        "content": "## 2) License gate\nPer docs/03-visual-asset-rights-policy.md, an asset\nmay only advance if license_type is one of the six\naccepted categories (never UNAUTHORIZED), all 8\nmandatory fields are populated, approval_status =\nVERIFIED, and human_review_completed = TRUE.",
+        "height": 220,
+        "width": 320
+      },
+      "id": "3a111111-1111-4111-8111-111111111308",
+      "name": "Sticky Note - License Gate",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-720, -60]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "r1", "name": "usage_status", "type": "string", "value": "REJECTED_UNAUTHORIZED" },
+            { "id": "r2", "name": "block_reason", "type": "string", "value": "license_type = UNAUTHORIZED." }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111309",
+      "name": "Rejected - Unauthorized",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-460, 480]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            { "id": "u1", "leftValue": "={{$json.approval_status}}", "rightValue": "VERIFIED", "operator": { "type": "string", "operation": "equals" } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111310",
+      "name": "approval_status = VERIFIED?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-460, 220]
+    },
+    {
+      "parameters": {
+        "content": "## 3) Approval + human review\napproval_status must be VERIFIED (not\nPENDING_REVIEW/REJECTED/EXPIRED/REVOKED), and\nhuman_review_completed must be TRUE independently -\nso neither field alone can let an asset through.",
+        "height": 200,
+        "width": 320
+      },
+      "id": "3a111111-1111-4111-8111-111111111311",
+      "name": "Sticky Note - Approval",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-480, -60]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            { "id": "h1", "leftValue": "={{$json.human_review_completed}}", "rightValue": true, "operator": { "type": "boolean", "operation": "true" } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111312",
+      "name": "Human Review Completed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-220, 220]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "p1", "name": "usage_status", "type": "string", "value": "PENDING_REVIEW" },
+            { "id": "p2", "name": "block_reason", "type": "string", "value": "approval_status is not VERIFIED yet." }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111313",
+      "name": "Pending - Not Verified",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-220, 480]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "n1", "name": "usage_status", "type": "string", "value": "PENDING_REVIEW" },
+            { "id": "n2", "name": "block_reason", "type": "string", "value": "human_review_completed is not TRUE." }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111314",
+      "name": "Pending - No Human Review",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [20, 480]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "usage_status", "type": "string", "value": "CLEARED_FOR_USE" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111315",
+      "name": "Approved - CLEARED_FOR_USE",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [20, 220]
+    },
+    {
+      "parameters": {
+        "content": "## 4) Outcomes\nOnly the top path reaches CLEARED_FOR_USE. Every\nother path ends in PENDING_REVIEW,\nREJECTED_UNAUTHORIZED, or\nBLOCKED_INCOMPLETE_RECORD. This gate runs per\nasset, independently of the topic-research pipeline\nin stage-01-topic-research-pipeline.json.",
+        "height": 220,
+        "width": 320
+      },
+      "id": "3a111111-1111-4111-8111-111111111316",
+      "name": "Sticky Note - Outcomes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [0, -80]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "s1", "name": "execution_summary", "type": "string", "value": "={{ 'asset_id=' + $json.asset_id + ' | usage_status=' + $json.usage_status + ' | reason=' + ($json.block_reason || 'n/a') }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a111111-1111-4111-8111-111111111317",
+      "name": "Execution Summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [280, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Set Fictitious Asset Data", "type": "main", "index": 0 }]]
+    },
+    "Set Fictitious Asset Data": {
+      "main": [[{ "node": "Validate 8 Mandatory Fields", "type": "main", "index": 0 }]]
+    },
+    "Validate 8 Mandatory Fields": {
+      "main": [
+        [{ "node": "license_type != UNAUTHORIZED?", "type": "main", "index": 0 }],
+        [{ "node": "Blocked - Incomplete Record", "type": "main", "index": 0 }]
+      ]
+    },
+    "license_type != UNAUTHORIZED?": {
+      "main": [
+        [{ "node": "approval_status = VERIFIED?", "type": "main", "index": 0 }],
+        [{ "node": "Rejected - Unauthorized", "type": "main", "index": 0 }]
+      ]
+    },
+    "approval_status = VERIFIED?": {
+      "main": [
+        [{ "node": "Human Review Completed?", "type": "main", "index": 0 }],
+        [{ "node": "Pending - Not Verified", "type": "main", "index": 0 }]
+      ]
+    },
+    "Human Review Completed?": {
+      "main": [
+        [{ "node": "Approved - CLEARED_FOR_USE", "type": "main", "index": 0 }],
+        [{ "node": "Pending - No Human Review", "type": "main", "index": 0 }]
+      ]
+    },
+    "Approved - CLEARED_FOR_USE": {
+      "main": [[{ "node": "Execution Summary", "type": "main", "index": 0 }]]
+    },
+    "Pending - No Human Review": {
+      "main": [[{ "node": "Execution Summary", "type": "main", "index": 0 }]]
+    },
+    "Pending - Not Verified": {
+      "main": [[{ "node": "Execution Summary", "type": "main", "index": 0 }]]
+    },
+    "Rejected - Unauthorized": {
+      "main": [[{ "node": "Execution Summary", "type": "main", "index": 0 }]]
+    },
+    "Blocked - Incomplete Record": {
+      "main": [[{ "node": "Execution Summary", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "portfolio-demo-instance"
+  }
+}

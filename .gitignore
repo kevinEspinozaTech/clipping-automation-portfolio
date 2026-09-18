@@ -23,6 +23,13 @@ transcripts/private/
 credentials/
 secrets/
 
+# Original-content production working files (never tracked)
+narration/
+voiceover/
+b-roll/
+renders/
+exports/
+
 # OS / editor noise
 .DS_Store
 Thumbs.db

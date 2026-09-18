@@ -1,4 +1,0 @@
-source_id,source_url,source_platform,creator_name,video_title,published_at,duration_seconds,language,niche,intake_date,rights_status,processing_status,notes
-SRC-0001,https://example.com/demo/video-1,YouTube,Example Creator One,"[EXAMPLE] Big Stream Highlights",2026-01-10,3600,en,gaming,2026-01-15,VERIFIED,READY_FOR_TRANSCRIPTION,"[EXAMPLE DATA] Own content, no third-party footage"
-SRC-0002,https://example.com/demo/video-2,Twitch,Example Creator Two,"[EXAMPLE] Cooking Session Replay",2026-02-01,7200,es,lifestyle,2026-02-03,PENDING_REVIEW,BLOCKED,"[EXAMPLE DATA] Awaiting written permission from creator"
-SRC-0003,https://example.com/demo/video-3,YouTube,Example Creator Three,"[EXAMPLE] Podcast Episode 12",2025-12-20,5400,en,education,2026-01-05,REJECTED,BLOCKED,"[EXAMPLE DATA] Guest declined commercial reuse rights"

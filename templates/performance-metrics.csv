@@ -1,4 +1,4 @@
-clip_id,source_id,platform,published_at,views_24h,views_7d,average_watch_time,completion_rate,likes,comments,shares,saves,followers_gained,rights_status_at_publish,notes
-CLIP-0001,SRC-0001,YouTube Shorts,2026-01-20,1200,5400,14.2,0.61,340,22,15,8,12,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"
-CLIP-0002,SRC-0001,TikTok,2026-01-21,2300,9800,11.8,0.55,610,40,52,19,27,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"
-CLIP-0003,SRC-0001,Instagram Reels,2026-01-22,800,3100,9.5,0.48,150,9,6,4,3,VERIFIED,"[EXAMPLE DATA] Demonstrative metrics only"
+video_id,topic_id,video_type,platform,published_at,views_24h,views_7d,average_view_duration,completion_rate,likes,comments,shares,saves,subscribers_gained,assets_cleared_at_publish,notes
+VIDEO-0001,TOPIC-0001,long_form,YouTube,2026-10-15,900,4200,312.5,0.42,180,25,10,6,14,TRUE,"[EXAMPLE DATA] First long-form MVP video"
+SHORT-0001,TOPIC-0001,short,YouTube Shorts,2026-10-16,3100,14500,28.4,0.71,540,38,60,22,31,TRUE,"[EXAMPLE DATA] Short derived from VIDEO-0001"
+SHORT-0002,TOPIC-0001,short,YouTube Shorts,2026-10-17,1800,8200,22.1,0.58,290,15,25,9,12,TRUE,"[EXAMPLE DATA] Second short derived from VIDEO-0001"

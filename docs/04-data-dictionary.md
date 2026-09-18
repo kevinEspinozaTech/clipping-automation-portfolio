@@ -4,6 +4,8 @@ This document defines every field used in the CSV registries under [`templates/`
 
 ## `topic-registry.csv`
 
+The idea bank. Per-dimension scores and their evidence live separately in [`topic-scoring-log.csv`](#topic-scoring-logcsv) — see [`07-topic-scoring-methodology.md`](07-topic-scoring-methodology.md) for how `final_score` is computed from that log.
+
 | Field | Type | Description |
 |---|---|---|
 | `topic_id` | string | Unique identifier for the topic idea (e.g., `TOPIC-0001`). |
@@ -11,13 +13,32 @@ This document defines every field used in the CSV registries under [`templates/`
 | `category` | enum | `geography`, `infrastructure`, `cities`, `borders`, `curiosities` (extendable). |
 | `region` | string | Geographic region focus (initially always `Europe`). |
 | `language` | string | Target language (ISO 639-1, initially always `es`). |
-| `trend_score` | number (0-10) | Estimated current audience interest. |
-| `competition_score` | number (0-10) | Higher = less saturated / more room to stand out. |
-| `novelty_score` | number (0-10) | How fresh or underexplored the angle is. |
-| `final_score` | number | Average of the score fields above (see [`prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md)). |
-| `status` | enum | `IDEA`, `SOURCES_VERIFIED`, `SCRIPT_DRAFT`, `SCRIPT_APPROVED`, `IN_PRODUCTION`, `SHORTS_DERIVED`, `READY_TO_PUBLISH`, `PUBLISHED`, `REJECTED`. |
+| `sources_available_status` | enum | `NOT_MEASURED`, `REQUIRES_MANUAL_REVIEW`, `CONFIRMED`, `INSUFFICIENT`. Hard gate — see methodology. |
+| `visual_resources_feasible_status` | enum | Same enum as above. Hard gate — see methodology. |
+| `final_score` | number or `REQUIRES_MANUAL_REVIEW` | Weighted mean of whichever of the 7 scoring dimensions in `topic-scoring-log.csv` are real numbers; `REQUIRES_MANUAL_REVIEW` if fewer than 4 of 7 are measured. |
+| `recommended` | boolean | `TRUE` only if `final_score >= 6.0` AND both gate fields are `CONFIRMED`. |
+| `status` | enum | `IDEA`, `PENDING_HUMAN_REVIEW`, `SOURCES_VERIFIED`, `SCRIPT_DRAFT`, `SCRIPT_APPROVED`, `IN_PRODUCTION`, `SHORTS_DERIVED`, `READY_TO_PUBLISH`, `PUBLISHED`, `REJECTED`, `BLOCKED_NO_SOURCES`, `BLOCKED_NO_VISUAL_RIGHTS`, `BLOCKED_INVALID_INTAKE`. |
 | `created_at` | date | Date the topic was logged. |
+| `last_scored_at` | date | Date `final_score` was last (re)computed. |
 | `notes` | string | Free-text internal notes. |
+
+## `topic-scoring-log.csv`
+
+The auditable evidence trail behind every `final_score` — one row per scored dimension per topic. See [`07-topic-scoring-methodology.md`](07-topic-scoring-methodology.md) for the full formula and the no-fabrication rule.
+
+| Field | Type | Description |
+|---|---|---|
+| `log_id` | string | Unique identifier for this scoring entry (e.g., `LOG-0001`). |
+| `topic_id` | string | Foreign key to `topic-registry.csv`. |
+| `dimension` | enum | `demand_score`, `competition_score`, `evergreen_score`, `source_availability_score`, `visual_rights_availability_score`, `production_ease_score`, `monetization_safety_score`. |
+| `value_or_status` | number (0-10) or string | A real score, or the literal string `NOT_MEASURED` — never a fabricated number. |
+| `weight` | string | Weight used for this dimension in the formula (default `1/7`, adjustable). |
+| `source` | string | Description of where the value came from (external source, or an internal editorial judgment call, stated honestly either way). |
+| `source_url` | string | URL of the source, if external. Empty if none. |
+| `consulted_at` | date | Date the source was consulted. Empty if not applicable (e.g., `NOT_MEASURED`). |
+| `scored_by` | string | Who/what produced this entry (e.g., `AI-assisted (Claude) -- pending human review`). |
+| `scored_at` | date | Date this log entry was created. |
+| `notes` | string | Justification for the value, or why it is `NOT_MEASURED`. |
 
 ## `source-registry.csv`
 

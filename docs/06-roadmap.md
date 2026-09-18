@@ -6,14 +6,17 @@
 
 Per the project's current priorities, the **first real automation to be built** concentrates narrowly on the early-pipeline stages, before any production work:
 
-| Focus area | Scope |
-|---|---|
-| Research | Capturing trend/competition signals for candidate topics. |
-| Idea bank | Logging candidate topics in `topic-registry.csv`. |
-| Topic scoring | Applying [`prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md) to prioritize the idea bank. |
-| Source documentation | Logging and verifying factual sources in `source-registry.csv` before any script work begins. |
-| Assisted script drafting | Applying [`prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md), always followed by mandatory human review. |
-| State logging | Keeping `status` fields in the registries accurate as topics move through the pipeline. |
+| Focus area | Scope | Status |
+|---|---|---|
+| Research | Capturing real, sourced signals for candidate topics (Wikipedia, Eurostat, etc.). | **Stage 2 — done for the initial idea list** |
+| Idea bank | Logging candidate topics in `topic-registry.csv`. | **Stage 2 — done, 5 real topics seeded** |
+| Topic scoring | Applying the 7-dimension model in [`prompts/topic-scoring-prompt.md`](../prompts/topic-scoring-prompt.md) and [`07-topic-scoring-methodology.md`](07-topic-scoring-methodology.md), logged in `topic-scoring-log.csv`. | **Stage 2 — methodology + initial scoring done** |
+| Blocking rule | Hard-block a topic when sources or visual resources are `INSUFFICIENT`, independent of score. | **Stage 2 — documented + modeled in n8n** |
+| Source documentation | Logging and verifying factual sources in `source-registry.csv` before any script work begins. | Next — human verification of Stage 2's sourced topics |
+| Assisted script drafting | Applying [`prompts/script-draft-assist-prompt.md`](../prompts/script-draft-assist-prompt.md), always followed by mandatory human review. | Not started |
+| State logging | Keeping `status` fields in the registries accurate as topics move through the pipeline. | Ongoing |
+
+Stage 2 deliberately stops at scoring: every seeded topic sits at `status = PENDING_HUMAN_REVIEW` because `sources_available_status` and `visual_resources_feasible_status` require a human to confirm them — the AI-assisted research surfaced real, cited evidence but never self-promotes a topic to `CONFIRMED`/`recommended`.
 
 ## Explicitly out of scope for now
 
@@ -29,8 +32,8 @@ Per current project constraints, the following are **not** implemented yet and a
 
 | Pipeline stage | Status |
 |---|---|
-| Research, idea bank, topic scoring | **Next automation target** — see above |
-| Source verification | **Next automation target** — see above |
+| Research, idea bank, topic scoring | **In progress (Stage 2)** — see above |
+| Source verification | Next — human verification of Stage 2's sourced topics |
 | Visual-license verification | Governance + n8n demo gate exist (`visual-asset-rights-gate.json`); not yet wired to real registries |
 | Script creation + human review | Prompt defined; not yet automated |
 | Narration | Planned |

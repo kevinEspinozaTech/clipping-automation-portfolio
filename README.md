@@ -2,7 +2,7 @@
 
 A portfolio project demonstrating a governed, source-and-license-aware automation pipeline for producing **original, faceless YouTube content** — narrated videos about European geography, infrastructure, cities, borders, and curiosities, initially in Spanish.
 
-> **Status:** Project pivoted from a third-party clipping concept to an original-content pipeline after a risk review. See [`docs/decisions/ADR-001-pivot-to-original-faceless-content.md`](docs/decisions/ADR-001-pivot-to-original-faceless-content.md). Current stage: governance, documentation, and pipeline skeleton adapted to the new direction. No live automation, video production, or publishing has been implemented yet.
+> **Status:** Project pivoted from a third-party clipping concept to an original-content pipeline after a risk review (see [`docs/decisions/ADR-001-pivot-to-original-faceless-content.md`](docs/decisions/ADR-001-pivot-to-original-faceless-content.md)). Currently in **Stage 2**: real topic research, idea banking, and scoring — no video production, scripting, or publishing automation has been implemented yet.
 
 ## Business problem
 
@@ -85,6 +85,7 @@ Full component breakdown: [`docs/02-workflow-architecture.md`](docs/02-workflow-
 
 - **Source verification is never automatic.** A topic cannot reach script drafting without documented, human-verified sources (see [`docs/04-data-dictionary.md`](docs/04-data-dictionary.md)).
 - **Visual-asset licensing is never automatic.** An asset cannot be used until a human sets `approval_status = VERIFIED` and `human_review_completed = TRUE` (see [`docs/03-visual-asset-rights-policy.md`](docs/03-visual-asset-rights-policy.md)).
+- **Topic scoring never fabricates data.** A dimension the system can't actually measure (e.g., live search-trend data) is logged as `NOT_MEASURED`, never guessed — and a topic is hard-blocked (`BLOCKED_NO_SOURCES` / `BLOCKED_NO_VISUAL_RIGHTS`) the moment sources or visual resources are found `INSUFFICIENT`, regardless of how high its score is. Only a human can mark a topic's gates `CONFIRMED`. See [`docs/07-topic-scoring-methodology.md`](docs/07-topic-scoring-methodology.md).
 - **AI scoring and drafting are advisory only.** Prompts explicitly flag unverified claims or asset concerns instead of resolving them, and every AI-assisted script draft carries a fixed human-review notice.
 - **Two independent human checkpoints** — script review and final pre-publish review — sit between drafting and publishing.
 - **Publishing is always a manual human action.** No automatic or scheduled publish path exists anywhere in this system.
@@ -111,7 +112,8 @@ clipping-automation-portfolio/
 │   ├── 03-visual-asset-rights-policy.md
 │   ├── 04-data-dictionary.md
 │   ├── 05-mvp-testing-plan.md
-│   └── 06-roadmap.md
+│   ├── 06-roadmap.md
+│   └── 07-topic-scoring-methodology.md
 ├── n8n/                       # Importable n8n workflow skeletons + their own README
 ├── templates/                 # CSV registries and permission/authorization templates
 ├── prompts/                   # AI prompt templates (topic scoring, script draft, Shorts scoring, metadata)
@@ -123,7 +125,7 @@ clipping-automation-portfolio/
 
 ## Current status
 
-The project has been re-scoped from third-party clipping to original faceless-content production. Governance, documentation, registries (with fictitious sample data), and two non-functional n8n demonstration workflows have been adapted to the new pipeline. No real research, scripting, narration, editing, or publishing automation exists yet.
+**Stage 2 — Topic research, idea bank, and scoring in progress.** The idea bank ([`templates/topic-registry.csv`](templates/topic-registry.csv)) is seeded with 5 real, sourced candidate topics (Wikipedia, Eurostat, Wikimedia Commons — see [`templates/topic-scoring-log.csv`](templates/topic-scoring-log.csv) for every citation) scored under the documented 7-dimension methodology ([`docs/07-topic-scoring-methodology.md`](docs/07-topic-scoring-methodology.md)). Every seeded topic sits at `status = PENDING_HUMAN_REVIEW` — none has been human-approved to advance yet. No source-registry verification, scripting, narration, editing, or publishing automation exists yet.
 
 ## Planned stages
 
@@ -131,8 +133,10 @@ See the detailed status table in [`docs/06-roadmap.md`](docs/06-roadmap.md).
 
 | Stage | Scope | Status |
 |---|---|---|
-| Governance & pipeline skeleton | Documentation, rights/license policy, registries, n8n skeletons | **Completed (adapted for the pivot)** |
-| Research automation | Trend research, idea bank, topic scoring, source documentation, assisted script drafting, state logging | Next automation target |
+| Governance & pipeline skeleton | Documentation, rights/license policy, registries, n8n skeletons | **Completed (Stage 1, adapted for the pivot)** |
+| Research, idea bank & scoring | Real topic research, 7-dimension scoring, blocking rule | **In progress (Stage 2)** |
+| Source & visual-asset verification | Human confirmation of sourced topics' gates | Next |
+| Assisted script drafting | AI-assisted drafting from verified sources, human review | Planned |
 | Visual-asset production | Sourcing/clearing maps, graphics, footage, music per the license gate | Planned |
 | Narration & editing | TTS/narration, long-form assembly, Shorts derivation, subtitles | Planned |
 | Review & publishing | Human review checkpoints, manual publish | Planned (manual by design) |

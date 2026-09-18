@@ -10,7 +10,9 @@ Manual checklist executed before every commit to this repository. See [`../docs/
 
 ## CSV integrity
 
-- [ ] `topic-registry.csv`, `source-registry.csv`, `visual-asset-registry.csv`, `performance-metrics.csv`, and `results/sample-results.csv` all have consistent headers.
+- [ ] `topic-registry.csv`, `topic-scoring-log.csv`, `source-registry.csv`, `visual-asset-registry.csv`, `performance-metrics.csv`, and `results/sample-results.csv` all have consistent headers.
+- [ ] Every `topic_id` referenced in `topic-scoring-log.csv` exists in `topic-registry.csv` (no orphan rows).
+- [ ] No `final_score` in `topic-registry.csv` is a number unsupported by measured rows in `topic-scoring-log.csv` (see [`../docs/07-topic-scoring-methodology.md`](../docs/07-topic-scoring-methodology.md)).
 - [ ] Every row has the same number of columns as its header.
 - [ ] All data rows are clearly fictitious/example data.
 

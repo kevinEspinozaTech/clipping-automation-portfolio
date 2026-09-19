@@ -39,6 +39,76 @@ Selected after a broad search for "current faceless niche opportunity" surfaced 
 - **Monetization ceiling for kids' content is real and officially documented**, not assumed — directly confirmed against YouTube's own policy pages.
 - **No RPM, revenue, retention, or internal competition metric is presented anywhere in this report or its underlying CSVs as a hard number** — every such figure is either absent (`NOT_PUBLICLY_AVAILABLE`) or explicitly labeled as a third-party estimate.
 
+## Addendum (2026-09-19): deepening pass on the 4 shortlisted niches
+
+Following an audit of the original pass, a second research pass specifically targeted the 4 shortlisted niches (geography, cities/urbanism, economics, nature/wildlife) to close identified evidence gaps. Full per-criterion detail: [`../templates/niche-scoring-matrix.csv`](../templates/niche-scoring-matrix.csv) (rows dated 2026-09-19); per-channel detail: [`../templates/channel-video-registry.csv`](../templates/channel-video-registry.csv).
+
+### Direct YouTube verification attempted, and why it failed
+
+A direct WebFetch of every comparable channel's YouTube "About" page was attempted first, per the audit's request. Every single attempt was redirected to YouTube's cookie-consent wall (`consent.youtube.com`); following the consent redirect through to completion returned only page-footer navigation links, with no channel statistics rendered — YouTube's channel header is client-side-rendered and not present in the fetched HTML in this environment. This is a genuine environment limitation, not a skipped step. As a fallback, Social Blade (a standard, widely-used third-party YouTube-statistics tracker) was attempted and returned HTTP 403 (bot-blocked) for every channel. The best available real verification was therefore dated, cited figures surfaced via web search (HypeAuditor rankings, Wikipedia, and similar aggregators/encyclopedic sources) — weaker than a live YouTube fetch, but stronger than the single-blog citations used in the first pass, and every figure now carries a specific date.
+
+### Metrics newly confirmed or corrected
+
+- RealLifeLore: 7,944,011 subscribers, ranked #1669 worldwide, dated September 2026 (was an imprecise "7.9-9M" blog range).
+- Half as Interesting: 2,935,101 subscribers, dated June 2026 (was `NOT_PUBLICLY_AVAILABLE`).
+- Not Just Bikes: 1.46 million subscribers, 204 million views (was `NOT_PUBLICLY_AVAILABLE`).
+- Economics Explained: 2,884,738 subscribers, dated September 2026 (refined from a prior "2.85M").
+- Natural World Facts: over 950,000 subscribers, 110 million views (was `NOT_PUBLICLY_AVAILABLE`).
+- Brave Wilderness: 210.8 million views on the main channel and 5.5 billion combined views confirmed in addition to the previously-known subscriber counts.
+- City Beautiful and Two Cents: **still not resolved to a current figure** — City Beautiful's subscriber count is inconsistent across sources (350K ~2021-22, 651K Jan 2024, an undated 680K mention) with nothing dated 2025/2026 found; Two Cents' only dated figure remains April 2020 (330K). Both are logged honestly as stale/`NOT_PUBLICLY_AVAILABLE`-for-a-current-figure rather than treated as current.
+
+### OutlierKit corroboration (point 2 of the audit)
+
+OutlierKit's own "About" page was located: it is run by three named individuals (Jose, Ayush Chaturvedi, Aditi Chaturvedi) as a commercial YouTube-growth-tool business that sells a niche-research product — a disclosed commercial incentive to portray many niches as low-competition opportunities. No independent second source could be found to corroborate OutlierKit's specific claims for the nature/wildlife niche (production ease, visual-legal availability, competition, sustainability). Per the audit's rule, all four scores were downgraded or replaced with independently-sourced evidence (see the reproducible competition sample below, and the visual-legal findings). This is the clearest single finding of this pass: a claim from a source with an undisclosed-until-now conflict of interest did not survive independent verification.
+
+### Nature/wildlife visual-legal availability, properly researched (point 3)
+
+Concrete, real, verified sources across the required categories:
+- **Public domain:** the U.S. Fish & Wildlife Service National Digital Library (`fws.gov/library`) — most content is confirmed public domain and free to use, though *each individual image's copyright status must be checked*, since the library also hosts contributed images that retain copyright.
+- **Creative Commons / public-body material:** Wikimedia Commons and iNaturalist (not independently re-verified in this pass beyond the general Commons pattern already confirmed in Stage 2 for other subjects).
+- **Free stock libraries:** Pexels, Pixabay, and Unsplash were checked directly — all three confirmed to allow free commercial use of photos/video without attribution (Pixabay and Unsplash explicitly prohibit compiling their content into a competing stock service, a real restriction worth noting for any bulk-sourcing workflow).
+- **Material requiring a paid license:** premium/rare-species footage and professional wildlife cinematography (the kind used by high-production channels) is **not** covered by the free sources above and would require a paid stock license or original filming — this resolves the contradiction flagged in the original pass: legally-free material genuinely exists, but it skews toward common species and general nature/landscape shots, not the premium footage that made the niche look "abundant and free" in the original single-source claim.
+
+### Cities/urbanism open-data check (point 4)
+
+Real, active open-data portals were confirmed for 4 European cities: **Amsterdam** (`data.amsterdam.nl` / `maps.amsterdam.nl`, ~300 datasets), **Barcelona** (Open Data BCN, 450+ datasets, CKAN API), **Berlin** (`daten.berlin.de` plus a dedicated Geoportal for geodata), and **Paris** (`opendata.paris.fr`, ODbL-licensed, includes real-time multimodal traffic-counting data). This directly resolves the prior "not verified per-city" gap for these 4 cities; it does not extend to every European city that might eventually be covered.
+
+### CPM/monetization methodology sources (point 5)
+
+No official, published Google/YouTube rate card exists — confirmed directly: YouTube ad pricing is a real-time auction inside Google Ads with no fixed price by category. Every CPM-by-category figure found (including the original Shortimize citation) is an industry-aggregated benchmark, not an official disclosure. This is now stated explicitly rather than implied: `monetization_feasibility_score` for every niche remains a **feasibility judgment**, and no specific CPM/RPM number is used as a scored fact anywhere in this project — see [`09-niche-scoring-methodology.md`](09-niche-scoring-methodology.md).
+
+### Reproducible competition sample (point 6)
+
+**Method (defined before counting):** for each of the 4 shortlisted niches, one web search using a fixed query template ("best `[niche]` YouTube channels list 2026") was run once on 2026-09-19; every distinct, named, identifiably-active channel appearing in the synthesized result set was counted. This is a **bounded proxy for visibility/recognition in curated sources** (blogs, rankings, encyclopedic pages), not a direct YouTube search or a census of every channel in the niche, and individual upload activity in the last 6 months was not verified channel-by-channel — that would require dozens of additional individual channel checks beyond this pass's scope. Results:
+
+| Niche | Distinct active channels surfaced | Channels |
+|---|---|---|
+| Geography | 7 | RealLifeLore, Atlas Pro, Wendover Productions, CGP Grey, PolyMatter, Geography Now, Half as Interesting |
+| Cities/urbanism | 4 (fewest) | City Beautiful, CityNerd, Not Just Bikes, Donoteat01 |
+| Economics | 10 (most, tied) | Economics Explained, Money & Macro, How Money Works, Humphrey Yang, Bald Guy Money, Think Media, Quiet Quest, Patrick Boyle, The Economist, Financial Times |
+| Nature/wildlife | 11 (most) | Brave Wilderness, BBC Earth, Free Documentary-Nature, Rob The Ranger Wildlife Videos, Love Nature, Nature on PBS, Epic Wildlife, Balu, Natural World Facts, Go Wild, Wildlife World |
+
+This directly overturns the assumption (from only 2-3 named channels per niche in the first pass) that nature/wildlife was low-competition — by this reproducible method it is the **most** crowded of the 4, and cities/urbanism is the **least** crowded.
+
+### Spanish-language demand (point 7)
+
+| Niche | Observed demand | Indirect signals | Not available |
+|---|---|---|---|
+| Geography | Daniel Geohistoria (~235K subs); Memorias de Pez (~2.7M subs, adjacent history/geopolitics/curiosities content) | — | No channel matching the exact geography/borders angle at large scale |
+| Economics | **VisualPolitik (~3.47M subscribers)** — the strongest real Spanish-demand signal found in this entire pass | — | — |
+| Cities/urbanism | — | Urbanópolis (exists, subscriber count not found); a small (~20K subscriber) channel following a single Madrid infrastructure project | No large Spanish-language urbanism channel found |
+| Nature/wildlife | — | Several Spanish-language nature/documentary channels exist (Documentales de Animales, NATURALEZA, Free Documentary Nature Español) but appear to rely on licensed/re-uploaded documentary content rather than original faceless production; none with a confirmed subscriber count in this pass | Original-format Spanish wildlife content specifically |
+
+This meaningfully revises the first pass's blanket claim that "no comparable large Spanish-language channel was found for any niche" — geography-adjacent and especially economics content **do** have large, real Spanish-language audiences; cities/urbanism and nature/wildlife remain genuine gaps or `REQUIRES_MANUAL_REVIEW`.
+
+### Faceless-format audit (point 8)
+
+Re-checked, not assumed, for every channel: **confirmed host-led (not faceless)** — Not Just Bikes, City Beautiful, Two Cents, Brave Wilderness. **Confirmed faceless** — RealLifeLore, Half as Interesting, Economics Explained, Natural World Facts. **`REQUIRES_MANUAL_REVIEW`** (not independently confirmed either way in this pass) — Memorias de Pez, VisualPolitik (both newly added Spanish-language dossiers; VisualPolitik in particular is commonly presenter-driven based on general knowledge of the channel, but this was not independently re-verified against actual video content this pass).
+
+### Net effect on scores and ranking
+
+See [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) row notes for the full per-niche change log. Summary: nature/wildlife dropped from rank 2 (7.3) to rank 4 (6.8, now tied with infrastructure) after its OutlierKit-derived scores were corrected; cities/urbanism rose from rank 4 (7.0) to rank 2 (7.2) after real open-data and lower-than-assumed competition evidence; geography and economics both saw internal composition changes (geography's competition score fell after a larger real competitor count was found; economics' competition score fell but its Europe/Spanish-fit score rose, netting to an unchanged total). **The provisional shortlist membership (the same 4 niches) was not changed by this pass — only their internal ranking and scores were, based on new evidence.** Deciding whether to keep, reorder, or reconsider the shortlist in light of the geography/infrastructure tie remains a human decision.
+
 ## Limitations
 
 - 2 real examples per niche is a bounded sample, not an exhaustive market survey — useful for relative comparison, not a substitute for deeper due diligence on any single finalist.

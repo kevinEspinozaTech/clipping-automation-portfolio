@@ -42,7 +42,7 @@ The remaining non-shortlisted candidates (History 6.3, Science & technology 6.2,
 
 ### 1. European geography, borders & curiosities
 
-**Advantages:** Highest computed score in both weighting scenarios; strong demonstrated demand (RealLifeLore confirmed at 7.94M subscribers, Sept 2026); strong visual-rights availability already proven in this project's own Stage 2 work; a genuine Europe-first, Spanish-language differentiation gap, now backed on equal footing with Economics by real evidence of adjacent Spanish-language demand (Memorias de Pez, ~2.7M subscribers); near-inexhaustible topic supply.
+**Advantages:** Highest computed score in both weighting scenarios; strong demonstrated demand (RealLifeLore, 7.9-9M subscribers per an independent blog source); strong visual-rights availability already proven in this project's own Stage 2 work; a genuine Europe-first, Spanish-language differentiation gap, now backed on equal footing with Economics by real evidence of adjacent Spanish-language demand (Memorias de Pez -- a real channel with two unverified but roughly-agreeing estimates in the low millions, per the 2026-09-21 cleanup note in the report); near-inexhaustible topic supply.
 
 **Disadvantages:** The broad-topic space is genuinely crowded — a corrected, verified competition sample found 9 distinct active incumbent channels — requiring ongoing custom map/data-visualization production, a real skill/tool investment.
 

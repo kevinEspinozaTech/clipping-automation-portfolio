@@ -63,7 +63,7 @@ The default equal weighting (1/10 per criterion) is not the only lens worth appl
 | Europe/international fit | 3% |
 | Originality feasibility | 10% |
 
-Computed the same way as the default (renormalized over whichever criteria have a real numeric value), this weighting is tracked **alongside**, not instead of, the equal-weighted `total_score` in [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) notes and in [`08-market-research-report.md`](08-market-research-report.md). As of the 2026-09-20 correction, both scenarios keep the same top 4 niches (geography, economics, cities/urbanism, infrastructure), with geography and economics effectively tied for 1st under revenue-oriented weights.
+Computed the same way as the default (renormalized over whichever criteria have a real numeric value), this weighting is tracked **alongside**, not instead of, the equal-weighted `total_score` in [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) notes and in [`08-market-research-report.md`](08-market-research-report.md). As of the 2026-09-20 Infrastructure parity pass, the two scenarios diverge at the 4th slot: both agree on geography, economics, and cities/urbanism for the top 3 (with geography and economics effectively tied for 1st under revenue-oriented weights), but nature/wildlife and infrastructure are tied under equal weights and resolved by revenue-oriented weights in nature/wildlife's favor — see [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md) for the disclosed tie-break rule.
 
 ## Revising scores: only when new evidence justifies it
 

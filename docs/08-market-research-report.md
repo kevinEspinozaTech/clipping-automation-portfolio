@@ -109,11 +109,29 @@ This meaningfully revises the first pass's blanket claim that "no comparable lar
 
 Re-checked, not assumed, for every channel: **confirmed host-led (not faceless)** — Not Just Bikes, City Beautiful, Two Cents, Brave Wilderness. **Confirmed faceless** — RealLifeLore, Half as Interesting, Economics Explained, Natural World Facts. **`REQUIRES_MANUAL_REVIEW`** (not independently confirmed either way in this pass) — Memorias de Pez, VisualPolitik (both newly added Spanish-language dossiers; VisualPolitik in particular is commonly presenter-driven based on general knowledge of the channel, but this was not independently re-verified against actual video content this pass).
 
-### Net effect on scores and ranking — final corrected state (2026-09-20)
+### Net effect on scores and ranking — after the source-verification fix (superseded below by the Infrastructure parity pass)
 
-See [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) row notes for the full per-niche change log across both the 2026-09-19 and 2026-09-20 passes. Final corrected ranking (equal weights): 1. Geography (7.5), 2. Economics (7.4), 3. Cities/urbanism (7.2), 4. Infrastructure (6.8), 5. Nature/wildlife (6.6), 6. History (6.3), 7. Science & technology (6.2), 8. Kids/family (5.8). Under revenue-oriented weights, the order is identical except Economics and Geography are effectively tied for 1st (7.36 vs 7.38).
+Immediately after the source-verification fix (before the Infrastructure parity pass described next), the ranking stood at: 1. Geography (7.5), 2. Economics (7.4), 3. Cities/urbanism (7.2), 4. Infrastructure (6.8, unchanged throughout, mechanically promoted into the shortlist), 5. Nature/wildlife (6.6). This promotion was flagged at the time as **not yet a fair comparison** — Infrastructure had never been researched to the same depth as the other 3 shortlisted niches.
 
-**Shortlist membership changed as a direct, mechanical consequence of correcting invalid evidence: Nature & wildlife facts (6.6) dropped out of the top 4, and Infrastructure, engineering & megaprojects (6.8, unchanged throughout) now qualifies.** This was not a judgment call — it followed automatically once the invalid competition-sample citations were replaced with real ones. See [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md) for the full updated shortlist profiles and a non-binding recommendation. No niche has been selected as final.
+### Infrastructure parity pass (2026-09-20)
+
+To resolve the fairness gap above, Infrastructure, engineering & megaprojects was brought through the identical protocol used for Geography, Cities, and Economics: a reproducible competition sample from one real, directly-fetched editorial listicle (explicitly **not** an aggregator/directory dump, unlike the wildlife niche's Feedspot source), direct-verification attempts on its comparable channels, a Spanish-language demand check, and a faceless-format audit.
+
+**Competition sample:** WorthWatch, "Best Engineering YouTube Channels for Infrastructure" (directly fetched and confirmed) names 16 channels, including channels also relevant to the Cities/urbanism niche (Not Just Bikes, City Beautiful, CityNerd, RMTransit). Counting only the 12 squarely on-topic for infrastructure/engineering (The B1M, Real Engineering, The Engineering Mindset, Practical Engineering, The Efficient Engineer, Engineering with Rosie, NS Builders, Railways Explained, Building Beautifully, Tiny House Expedition, Transport Matters, Transport for London), this is the **most crowded of the 4 niches evaluated at parity** — more than Geography's 9, Economics' 7, or Cities' 5.
+
+**Visual-legal availability:** a second real megaproject (Golden Gate Bridge) was checked on Wikimedia Commons independently of the Gotthard Base Tunnel example already confirmed in Stage 2, finding strong CC-licensed coverage (379+76+44+145 files across subcategories) — this corroborates, rather than assumes from one example, that the pattern generalizes.
+
+**Spanish-language demand:** a real, dedicated Spanish-language channel for this exact niche (MegaProyectos España) was found to exist, but its subscriber count could not be verified (the analytics site checked returned a paywalled placeholder, not a real figure) — unlike Geography's and Economics' Spanish-demand evidence, this was **not** used to raise the score, since it cannot be confirmed.
+
+**Faceless-format audit:** The B1M is confirmed host-led (Fred Mills, official site). Ultimate Mega Projects is described in search results as using "a digital documentary host," which is ambiguous — not independently confirmed as genuinely faceless in this pass.
+
+**Net effect: Infrastructure's total_score fell from 6.8 to 6.6** (competition_entry_difficulty_score 5→4, visual_legal_availability_score 7→8, originality_feasibility_score 8→6). This exactly ties Nature & wildlife facts (also 6.6) under equal weights. See [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md) for the disclosed tie-break rule (revenue-oriented weighting decides) and the resulting shortlist.
+
+### Net effect on scores and ranking — final state after both 2026-09-20 passes
+
+Final ranking (equal weights): 1. Geography (7.5), 2. Economics (7.4), 3. Cities/urbanism (7.2), 4. Nature/wildlife (6.6, retains the slot via tie-break), 5. Infrastructure (6.6, loses the tie-break), 6. History (6.3), 7. Science & technology (6.2), 8. Kids/family (5.8). Under revenue-oriented weights: identical top 3 (Geography and Economics effectively tied for 1st, 7.36 vs 7.38), then Nature/wildlife (6.63) ahead of Infrastructure (6.52) outright — no tie in this scenario.
+
+**No niche has been selected as final.** The 4th shortlist slot is explicitly flagged in ADR-002 as a close, scenario-dependent call between two candidates with different, serious trade-offs (Nature/wildlife: most crowded field of any niche, unsubstantiated original pitch, but a proven faceless format; Infrastructure: cleanest demand/visual-rights story, but the most crowded field once measured and an unproven faceless format) — not a settled ranking.
 
 ## Limitations
 

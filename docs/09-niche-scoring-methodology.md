@@ -63,11 +63,13 @@ The default equal weighting (1/10 per criterion) is not the only lens worth appl
 | Europe/international fit | 3% |
 | Originality feasibility | 10% |
 
-Computed the same way as the default (renormalized over whichever criteria have a real numeric value), this weighting is tracked **alongside**, not instead of, the equal-weighted `total_score` in [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) notes and in [`08-market-research-report.md`](08-market-research-report.md). As of the 2026-09-19 revision, both scenarios keep the same 4 niches in the top 4 (geography, economics, cities/urbanism, nature/wildlife all outrank the remaining 4 in both weightings), though their internal order shifts slightly between the two.
+Computed the same way as the default (renormalized over whichever criteria have a real numeric value), this weighting is tracked **alongside**, not instead of, the equal-weighted `total_score` in [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) notes and in [`08-market-research-report.md`](08-market-research-report.md). As of the 2026-09-20 correction, both scenarios keep the same top 4 niches (geography, economics, cities/urbanism, infrastructure), with geography and economics effectively tied for 1st under revenue-oriented weights.
 
 ## Revising scores: only when new evidence justifies it
 
 A score is revised only when genuinely new evidence changes the picture — never merely to make a preferred candidate look better. Every revision must show the prior value, the new value, and the specific evidence that justified the change, logged directly in the `notes` field of the affected row in `niche-scoring-matrix.csv`. The 2026-09-19 deepening pass (see [`08-market-research-report.md`](08-market-research-report.md) addendum) is a worked example: 9 of the 40 scored rows across the 4 shortlisted niches were revised, each with an explicit "REVISED from X to Y" note citing the new source; the other 31 rows were left untouched because the new research did not contradict or add to them.
+
+**A citation is only as good as its verification.** The 2026-09-20 correction (see the report addendum and [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md)) found that 3 of the 2026-09-19 pass's "reproducible sample" citations pointed to real, live URLs that nonetheless did not support the claim attached to them — a mismatch that a plausibility check alone would not catch, since the URLs were real and topically adjacent. The lesson applied going forward: a citation is not verified until its actual content has been read and confirmed to state what the note claims it states, not merely confirmed to exist or resolve.
 
 ## Why monetization is scored as feasibility, not revenue
 

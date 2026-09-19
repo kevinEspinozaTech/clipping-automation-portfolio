@@ -77,18 +77,20 @@ Real, active open-data portals were confirmed for 4 European cities: **Amsterdam
 
 No official, published Google/YouTube rate card exists — confirmed directly: YouTube ad pricing is a real-time auction inside Google Ads with no fixed price by category. Every CPM-by-category figure found (including the original Shortimize citation) is an industry-aggregated benchmark, not an official disclosure. This is now stated explicitly rather than implied: `monetization_feasibility_score` for every niche remains a **feasibility judgment**, and no specific CPM/RPM number is used as a scored fact anywhere in this project — see [`09-niche-scoring-methodology.md`](09-niche-scoring-methodology.md).
 
-### Reproducible competition sample (point 6)
+### Reproducible competition sample (point 6) — ⚠️ CORRECTED 2026-09-20, see below
 
-**Method (defined before counting):** for each of the 4 shortlisted niches, one web search using a fixed query template ("best `[niche]` YouTube channels list 2026") was run once on 2026-09-19; every distinct, named, identifiably-active channel appearing in the synthesized result set was counted. This is a **bounded proxy for visibility/recognition in curated sources** (blogs, rankings, encyclopedic pages), not a direct YouTube search or a census of every channel in the niche, and individual upload activity in the last 6 months was not verified channel-by-channel — that would require dozens of additional individual channel checks beyond this pass's scope. Results:
+**Method (defined before counting):** for each of the 4 shortlisted niches, one web search using a fixed query template ("best `[niche]` YouTube channels list 2026") was run once on 2026-09-19; every distinct, named, identifiably-active channel appearing in the synthesized result set was counted. This is a **bounded proxy for visibility/recognition in curated sources** (blogs, rankings, encyclopedic pages), not a direct YouTube search or a census of every channel in the niche, and individual upload activity in the last 6 months was not verified channel-by-channel — that would require dozens of additional individual channel checks beyond this pass's scope.
 
-| Niche | Distinct active channels surfaced | Channels |
-|---|---|---|
-| Geography | 7 | RealLifeLore, Atlas Pro, Wendover Productions, CGP Grey, PolyMatter, Geography Now, Half as Interesting |
-| Cities/urbanism | 4 (fewest) | City Beautiful, CityNerd, Not Just Bikes, Donoteat01 |
-| Economics | 10 (most, tied) | Economics Explained, Money & Macro, How Money Works, Humphrey Yang, Bald Guy Money, Think Media, Quiet Quest, Patrick Boyle, The Economist, Financial Times |
-| Nature/wildlife | 11 (most) | Brave Wilderness, BBC Earth, Free Documentary-Nature, Rob The Ranger Wildlife Videos, Love Nature, Nature on PBS, Epic Wildlife, Balu, Natural World Facts, Go Wild, Wildlife World |
+**Correction (2026-09-20):** an independent review directly fetched all 4 of the citations below and found that 3 of the 4 pointed to real pages that **did not actually name the claimed channels** — one (Economics) pointed to a Wikipedia biography of an unrelated Canadian YouTuber with no connection to economics or finance at all. The 4th (Nature/wildlife) citation returned a server error on re-fetch and could not be confirmed either way. All 4 were re-verified against genuinely different, directly-fetched real sources. The table below shows the **corrected, verified** results; the original (invalid) claims are struck through for transparency, not deleted:
 
-This directly overturns the assumption (from only 2-3 named channels per niche in the first pass) that nature/wildlife was low-competition — by this reproducible method it is the **most** crowded of the 4, and cities/urbanism is the **least** crowded.
+| Niche | ~~Original claim (2026-09-19, invalid citation)~~ | **Corrected result (2026-09-20, verified citation)** | Verified source |
+|---|---|---|---|
+| Geography | ~~7 channels, cited to a Wikipedia article about one unrelated channel~~ | **9 channels**: RealLifeLore, Atlas Pro, Wendover Productions, Geography Now, Map Men, Half as Interesting, CGP Grey, GeoWizard, Rainbolt | EarthGuessr blog (directly fetched, confirmed) |
+| Cities/urbanism | ~~4 channels, cited to a Wikipedia article about one unrelated channel~~ | **5 channels** (fewest of the 4): CityNerd, Banks Rail, Nandert, City Beautiful, Climate Town | URBANEXUS "Urbanism on YouTube" (directly fetched, confirmed) |
+| Economics | ~~10 channels, cited to a Wikipedia biography with **no connection to economics at all**~~ | **7 channels**: Economics Explained, The Economic Times, Jacob Clifford, How Money Works, The Economist, Two Cents, Marginal Revolution University | MiniTool listicle (directly fetched, confirmed) |
+| Nature/wildlife | ~~11 channels, cited to a page that returned a server error on re-fetch~~ | **15+ confirmed of a claimed 90** (most of the 4): includes Brave Wilderness and Epic Wildlife, confirmed within the first 15 entries | Feedspot "90 Wildlife YouTubers" (directly fetched, confirmed) |
+
+The corrected, verified evidence still supports the same substantive conclusion as before — nature/wildlife is the most crowded of the 4 and cities/urbanism is the least — but via genuinely different sources and channel lists than the invalid 2026-09-19 citations claimed. See [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md) for the resulting shortlist changes.
 
 ### Spanish-language demand (point 7)
 
@@ -101,13 +103,17 @@ This directly overturns the assumption (from only 2-3 named channels per niche i
 
 This meaningfully revises the first pass's blanket claim that "no comparable large Spanish-language channel was found for any niche" — geography-adjacent and especially economics content **do** have large, real Spanish-language audiences; cities/urbanism and nature/wildlife remain genuine gaps or `REQUIRES_MANUAL_REVIEW`.
 
+**Correction (2026-09-20):** the 2026-09-19 pass applied this Spanish-demand evidence asymmetrically — Economics' `europe_international_fit_score` was revised upward to reflect the VisualPolitik finding, but Geography's equivalent finding (Memorias de Pez) was left out of Geography's score entirely. Both niches now receive the identical treatment (one real Spanish-language channel citation, same scoring impact) — see [`../templates/niche-scoring-matrix.csv`](../templates/niche-scoring-matrix.csv) row NLOG-0009.
+
 ### Faceless-format audit (point 8)
 
 Re-checked, not assumed, for every channel: **confirmed host-led (not faceless)** — Not Just Bikes, City Beautiful, Two Cents, Brave Wilderness. **Confirmed faceless** — RealLifeLore, Half as Interesting, Economics Explained, Natural World Facts. **`REQUIRES_MANUAL_REVIEW`** (not independently confirmed either way in this pass) — Memorias de Pez, VisualPolitik (both newly added Spanish-language dossiers; VisualPolitik in particular is commonly presenter-driven based on general knowledge of the channel, but this was not independently re-verified against actual video content this pass).
 
-### Net effect on scores and ranking
+### Net effect on scores and ranking — final corrected state (2026-09-20)
 
-See [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) row notes for the full per-niche change log. Summary: nature/wildlife dropped from rank 2 (7.3) to rank 4 (6.8, now tied with infrastructure) after its OutlierKit-derived scores were corrected; cities/urbanism rose from rank 4 (7.0) to rank 2 (7.2) after real open-data and lower-than-assumed competition evidence; geography and economics both saw internal composition changes (geography's competition score fell after a larger real competitor count was found; economics' competition score fell but its Europe/Spanish-fit score rose, netting to an unchanged total). **The provisional shortlist membership (the same 4 niches) was not changed by this pass — only their internal ranking and scores were, based on new evidence.** Deciding whether to keep, reorder, or reconsider the shortlist in light of the geography/infrastructure tie remains a human decision.
+See [`../templates/niche-format-comparison.csv`](../templates/niche-format-comparison.csv) row notes for the full per-niche change log across both the 2026-09-19 and 2026-09-20 passes. Final corrected ranking (equal weights): 1. Geography (7.5), 2. Economics (7.4), 3. Cities/urbanism (7.2), 4. Infrastructure (6.8), 5. Nature/wildlife (6.6), 6. History (6.3), 7. Science & technology (6.2), 8. Kids/family (5.8). Under revenue-oriented weights, the order is identical except Economics and Geography are effectively tied for 1st (7.36 vs 7.38).
+
+**Shortlist membership changed as a direct, mechanical consequence of correcting invalid evidence: Nature & wildlife facts (6.6) dropped out of the top 4, and Infrastructure, engineering & megaprojects (6.8, unchanged throughout) now qualifies.** This was not a judgment call — it followed automatically once the invalid competition-sample citations were replaced with real ones. See [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md) for the full updated shortlist profiles and a non-binding recommendation. No niche has been selected as final.
 
 ## Limitations
 

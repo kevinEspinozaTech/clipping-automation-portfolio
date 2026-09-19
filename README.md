@@ -2,7 +2,7 @@
 
 A portfolio project demonstrating a governed, source-and-license-aware automation pipeline for producing **original, faceless YouTube content** — narrated videos about European geography, infrastructure, cities, borders, and curiosities, initially in Spanish.
 
-> **Status:** Project pivoted from a third-party clipping concept to an original-content pipeline after a risk review (see [`docs/decisions/ADR-001-pivot-to-original-faceless-content.md`](docs/decisions/ADR-001-pivot-to-original-faceless-content.md)). Currently in **Stage 2**: real topic research, idea banking, and scoring — no video production, scripting, or publishing automation has been implemented yet.
+> **Status:** Project pivoted from a third-party clipping concept to an original-content pipeline after a risk review (see [`docs/decisions/ADR-001-pivot-to-original-faceless-content.md`](docs/decisions/ADR-001-pivot-to-original-faceless-content.md)). Stage 2 did real topic research, idea banking, and scoring within a European-geography focus. Stage 2B then independently researched and scored 8 candidate niches/formats (geography included, on equal footing) and produced a **provisional shortlist awaiting a human decision** — see [`docs/decisions/ADR-002-niche-format-shortlist-pending-decision.md`](docs/decisions/ADR-002-niche-format-shortlist-pending-decision.md). **No niche has been finalized.** No video production, scripting, or publishing automation has been implemented yet.
 
 ## Business problem
 
@@ -113,7 +113,10 @@ clipping-automation-portfolio/
 │   ├── 04-data-dictionary.md
 │   ├── 05-mvp-testing-plan.md
 │   ├── 06-roadmap.md
-│   └── 07-topic-scoring-methodology.md
+│   ├── 07-topic-scoring-methodology.md
+│   ├── 08-market-research-report.md
+│   ├── 09-niche-scoring-methodology.md
+│   └── 10-niche-selection-process-map.md
 ├── n8n/                       # Importable n8n workflow skeletons + their own README
 ├── templates/                 # CSV registries and permission/authorization templates
 ├── prompts/                   # AI prompt templates (topic scoring, script draft, Shorts scoring, metadata)
@@ -125,7 +128,7 @@ clipping-automation-portfolio/
 
 ## Current status
 
-**Stage 2 — Topic research, idea bank, and scoring in progress.** The idea bank ([`templates/topic-registry.csv`](templates/topic-registry.csv)) is seeded with 5 real, sourced candidate topics (Wikipedia, Eurostat, Wikimedia Commons — see [`templates/topic-scoring-log.csv`](templates/topic-scoring-log.csv) for every citation) scored under the documented 7-dimension methodology ([`docs/07-topic-scoring-methodology.md`](docs/07-topic-scoring-methodology.md)). Every seeded topic sits at `status = PENDING_HUMAN_REVIEW` — none has been human-approved to advance yet. No source-registry verification, scripting, narration, editing, or publishing automation exists yet.
+**Stage 2B — Deep market, niche & format research complete; decision pending.** Stage 2 seeded the idea bank ([`templates/topic-registry.csv`](templates/topic-registry.csv)) with 5 real, sourced candidate topics scored under a 7-dimension methodology ([`docs/07-topic-scoring-methodology.md`](docs/07-topic-scoring-methodology.md)) — every topic sits at `status = PENDING_HUMAN_REVIEW`. Stage 2B then independently researched 8 candidate niches/formats against 16 real comparable channels ([`templates/channel-video-registry.csv`](templates/channel-video-registry.csv)) and scored them ([`templates/niche-format-comparison.csv`](templates/niche-format-comparison.csv)), producing a provisional shortlist of 4 in [`docs/decisions/ADR-002-niche-format-shortlist-pending-decision.md`](docs/decisions/ADR-002-niche-format-shortlist-pending-decision.md) — **status: Proposed, awaiting a human decision.** No source-registry verification, scripting, narration, editing, or publishing automation exists yet.
 
 ## Planned stages
 
@@ -134,7 +137,8 @@ See the detailed status table in [`docs/06-roadmap.md`](docs/06-roadmap.md).
 | Stage | Scope | Status |
 |---|---|---|
 | Governance & pipeline skeleton | Documentation, rights/license policy, registries, n8n skeletons | **Completed (Stage 1, adapted for the pivot)** |
-| Research, idea bank & scoring | Real topic research, 7-dimension scoring, blocking rule | **In progress (Stage 2)** |
+| Research, idea bank & scoring | Real topic research, 7-dimension scoring, blocking rule | **Completed (Stage 2)** |
+| Deep market/niche/format research | 8-niche comparison, real evidence, provisional shortlist | **Completed (Stage 2B) — decision pending** |
 | Source & visual-asset verification | Human confirmation of sourced topics' gates | Next |
 | Assisted script drafting | AI-assisted drafting from verified sources, human review | Planned |
 | Visual-asset production | Sourcing/clearing maps, graphics, footage, music per the license gate | Planned |

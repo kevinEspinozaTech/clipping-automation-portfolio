@@ -18,6 +18,12 @@ Per the project's current priorities, the **first real automation to be built** 
 
 Stage 2 deliberately stops at scoring: every seeded topic sits at `status = PENDING_HUMAN_REVIEW` because `sources_available_status` and `visual_resources_feasible_status` require a human to confirm them — the AI-assisted research surfaced real, cited evidence but never self-promotes a topic to `CONFIRMED`/`recommended`.
 
+## Stage 2B — Deep market, niche & format research (research only, decision pending)
+
+Before Stage 2's European-geography focus is treated as final, Stage 2B independently researched and scored 8 candidate faceless-YouTube niche families (including geography, evaluated on equal footing, not assumed the winner) against 10 criteria: demand/viral potential, monetization feasibility, production cost, automation capability, visual-rights availability, long-form/Shorts fit, competition, 12-month sustainability, Europe/international fit, and originality feasibility. See [`08-market-research-report.md`](08-market-research-report.md), [`09-niche-scoring-methodology.md`](09-niche-scoring-methodology.md), and the provisional shortlist in [`decisions/ADR-002-niche-format-shortlist-pending-decision.md`](decisions/ADR-002-niche-format-shortlist-pending-decision.md).
+
+**No niche has been finalized.** Stage 2B produced a provisional, evidence-based shortlist of 4 candidates and a non-binding recommendation — the actual decision is explicitly left to human judgment. Nothing beyond research/scoring/documentation was produced: no script, narration, production, or publishing work has begun.
+
 ## Explicitly out of scope for now
 
 Per current project constraints, the following are **not** implemented yet and are not part of the next build increment:

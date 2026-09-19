@@ -10,9 +10,12 @@ Manual checklist executed before every commit to this repository. See [`../docs/
 
 ## CSV integrity
 
-- [ ] `topic-registry.csv`, `topic-scoring-log.csv`, `source-registry.csv`, `visual-asset-registry.csv`, `performance-metrics.csv`, and `results/sample-results.csv` all have consistent headers.
+- [ ] `topic-registry.csv`, `topic-scoring-log.csv`, `source-registry.csv`, `visual-asset-registry.csv`, `performance-metrics.csv`, `results/sample-results.csv`, `channel-video-registry.csv`, `niche-scoring-matrix.csv`, and `niche-format-comparison.csv` all have consistent headers.
 - [ ] Every `topic_id` referenced in `topic-scoring-log.csv` exists in `topic-registry.csv` (no orphan rows).
 - [ ] No `final_score` in `topic-registry.csv` is a number unsupported by measured rows in `topic-scoring-log.csv` (see [`../docs/07-topic-scoring-methodology.md`](../docs/07-topic-scoring-methodology.md)).
+- [ ] Every `niche_id` referenced in `niche-scoring-matrix.csv` exists in `niche-format-comparison.csv` (no orphan rows).
+- [ ] No `total_score` in `niche-format-comparison.csv` is a number unsupported by measured rows in `niche-scoring-matrix.csv` (see [`../docs/09-niche-scoring-methodology.md`](../docs/09-niche-scoring-methodology.md)).
+- [ ] No view/subscriber figure in `channel-video-registry.csv` is a fabricated-looking number — every such field is either a real cited figure or `NOT_PUBLICLY_AVAILABLE`.
 - [ ] Every row has the same number of columns as its header.
 - [ ] All data rows are clearly fictitious/example data.
 
